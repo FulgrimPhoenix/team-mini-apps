@@ -8,12 +8,11 @@ import {
   useState,
 } from "react";
 import styles from "./Task.module.scss";
-import { Button } from "../Button/Button";
-import { DeleteIcon } from "../../assets/DeleteIcon";
-import { EditIcon } from "../../assets/EditIcon";
-import { SaveIcon } from "../../assets/SaveIcon";
-import { TextField } from "../TextField/TextField";
+
 import { Itask } from "../../components/ToDo/ToDo";
+import Button from "../Button/Button";
+import TextField from "../TextField/TextField";
+import { DeleteIcon, EditIcon, SaveIcon } from "../../assets";
 
 interface ITask
   extends DetailedHTMLProps<HTMLAttributes<HTMLLIElement>, HTMLLIElement> {
@@ -24,14 +23,7 @@ interface ITask
   setTasks: Dispatch<SetStateAction<Itask>>;
 }
 
-export const Task: FC<ITask> = ({
-  title,
-  status,
-  id,
-  isEdit,
-  setTasks,
-  ...props
-}) => {
+const Task: FC<ITask> = ({ title, status, id, isEdit, setTasks, ...props }) => {
   const [newValue, setNewValue] = useState(title);
 
   const deleteTask = () => {
@@ -108,3 +100,5 @@ export const Task: FC<ITask> = ({
     </li>
   );
 };
+
+export default Task;

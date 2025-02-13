@@ -8,9 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { Task } from "../../ui/Task/Task";
-import { TextField } from "../../ui/TextField/TextField";
-import { Button } from "../../ui/Button/Button";
+import { Button, Task, TextField } from "../../ui";
 
 export interface Itask {
   [key: string]: {

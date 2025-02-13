@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { IIcon } from "../types/icons.types";
 
-export const EditIcon: FC<IIcon> = (props) => {
+const EditIcon: FC<IIcon> = (props) => {
   const getSize = (size: IIcon["size"]) => {
     switch (size) {
       case "sm":
@@ -42,3 +42,5 @@ export const EditIcon: FC<IIcon> = (props) => {
     </svg>
   );
 };
+
+export default EditIcon;

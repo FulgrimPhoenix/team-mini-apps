@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { IIcon } from "../types/icons.types";
 
-export const DeleteIcon: FC<IIcon> = (props) => {
+const DeleteIcon: FC<IIcon> = (props) => {
   const getSize = (size: IIcon["size"]) => {
     switch (size) {
       case "sm":
@@ -63,3 +63,5 @@ export const DeleteIcon: FC<IIcon> = (props) => {
     </svg>
   );
 };
+
+export default DeleteIcon;

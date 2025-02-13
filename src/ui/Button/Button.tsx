@@ -13,7 +13,7 @@ interface IButton
   size?: "sm" | "md" | "lg";
 }
 
-export const Button: FC<IButton> = ({
+const Button: FC<IButton> = ({
   icon,
   title,
   variant,
@@ -36,3 +36,5 @@ export const Button: FC<IButton> = ({
     </button>
   );
 };
+
+export default Button;

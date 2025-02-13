@@ -2,7 +2,7 @@ import clsx from "clsx";
 import { DetailedHTMLProps, FC, InputHTMLAttributes } from "react";
 import styles from "./TextField.module.scss";
 
-export const TextField: FC<
+const TextField: FC<
   DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 > = (props) => {
   return (
@@ -14,3 +14,5 @@ export const TextField: FC<
     />
   );
 };
+
+export default TextField;
