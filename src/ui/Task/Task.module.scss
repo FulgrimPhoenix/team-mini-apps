@@ -1,0 +1,30 @@
+.task {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  .title {
+    font-size: 20px;
+    font-weight: 400;
+    margin: auto 0;
+    padding: 0;
+  }
+
+  .task-done {
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 65%;
+      border-top: 3px solid #7fa29d;
+      transform: translateY(-50%);
+    }
+  }
+
+  .button-container {
+    min-width: 80px;
+  }
+}
