@@ -5,38 +5,31 @@ import {
   FC,
   HTMLAttributes,
   useEffect,
-  useMemo,
   useState,
 } from "react";
-import { Button, Task, TextField } from "../../ui";
-
-export interface Itask {
-  [key: string]: {
-    id: string;
-    title: string;
-    status: boolean;
-    isEdit: boolean;
-  };
-}
+import { Button, MemoizedTask, TextField } from "../../ui";
+import { useAddTaskMutation, useGetTasksQuery } from "../../store/tasksApi";
+import { Itask } from "../../types/tasks.types";
 
 export const ToDo: FC<
   DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement>
 > = () => {
-  const [tasks, setTasks] = useState<Itask>({});
   const [newTaskValue, setNewTaskValue] = useState("");
-  const tasksArray = useMemo(() => Object.values(tasks), [tasks]);
+  const [tasksArray, setTasksArray] = useState<Itask[]>([]);
+  const { data = [], isLoading } = useGetTasksQuery();
+  const [addTask] = useAddTaskMutation();
 
-  const addTask = () => {
+  const handleAddTask = async () => {
     const taskId = Date.now();
-    setTasks((prev) => ({
-      ...prev,
-      [taskId]: {
-        id: taskId,
+
+    if (newTaskValue) {
+      await addTask({
+        id: `${taskId}`,
         title: newTaskValue,
         status: false,
         isEdit: false,
-      },
-    }));
+      }).unwrap();
+    }
     setNewTaskValue("");
   };
 
@@ -46,7 +39,15 @@ export const ToDo: FC<
 
   useEffect(() => {
     setNewTaskValue("");
-  }, [tasks]);
+  }, [tasksArray]);
+
+  useEffect(() => {
+    if (!isLoading) {
+      if (Array.isArray(data)) {
+        setTasksArray(data);
+      }
+    }
+  }, [data, isLoading]);
 
   return (
     <section className={clsx(styles.toDo)}>
@@ -54,22 +55,27 @@ export const ToDo: FC<
         <h2 className={clsx(styles.title)}>To Do List!</h2>
         <h3 className={clsx(styles.subtitle)}>A Sample React Todo list App</h3>
         <ul style={{ padding: "0" }}>
-          {tasksArray.map((el) => (
-            <Task
-              key={el.id}
-              title={el.title}
-              id={el.id}
-              status={el.status}
-              isEdit={el.isEdit}
-              setTasks={setTasks}
-            />
-          ))}
+          {tasksArray.length > 0 ? (
+            tasksArray.map((el) => {
+              return (
+                <MemoizedTask
+                  key={el.id}
+                  title={el.title}
+                  id={el.id}
+                  status={el.status}
+                  isEdit={el.isEdit}
+                />
+              );
+            })
+          ) : (
+            <span>No tasks</span>
+          )}
         </ul>
         <div className={styles["input-area"]}>
           <TextField value={newTaskValue} onChange={handleChangeInput} />
           <Button
             title="Add Task"
-            onClick={addTask}
+            onClick={handleAddTask}
             variant="filled"
             disabled={newTaskValue.length === 0 ? true : false}
           />
