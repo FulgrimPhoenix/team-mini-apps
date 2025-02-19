@@ -1,18 +1,14 @@
 import clsx from "clsx";
-import {
-  DetailedHTMLProps,
-  Dispatch,
-  FC,
-  HTMLAttributes,
-  SetStateAction,
-  useState,
-} from "react";
+import React, { DetailedHTMLProps, FC, HTMLAttributes, useState } from "react";
 import styles from "./Task.module.scss";
 
-import { Itask } from "../../components/ToDo/ToDo";
 import Button from "../Button/Button";
 import TextField from "../TextField/TextField";
 import { DeleteIcon, EditIcon, SaveIcon } from "../../assets";
+import {
+  useDeleteTaskMutation,
+  useUpdateTaskMutation,
+} from "../../store/tasksApi";
 
 interface ITask
   extends DetailedHTMLProps<HTMLAttributes<HTMLLIElement>, HTMLLIElement> {
@@ -20,52 +16,47 @@ interface ITask
   status: boolean;
   id: string;
   isEdit: boolean;
-  setTasks: Dispatch<SetStateAction<Itask>>;
 }
 
-const Task: FC<ITask> = ({ title, status, id, isEdit, setTasks, ...props }) => {
+const Task: FC<ITask> = ({ title, status, id, isEdit, ...props }) => {
   const [newValue, setNewValue] = useState(title);
+  const [patchTask] = useUpdateTaskMutation();
+  const [removeTask] = useDeleteTaskMutation();
 
-  const deleteTask = () => {
-    setTasks((prev: Itask) => {
-      const newTasks = { ...prev };
-      delete newTasks[id];
-      return newTasks;
-    });
+  const deleteTask = async () => {
+    await removeTask(id);
   };
 
   const handleChangeNewValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNewValue(e.target.value);
   };
 
-  const saveTaskChanges = () => {
-    setTasks((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        title: newValue,
+  const saveTaskChanges = async () => {
+    try {
+      await patchTask({
+        id,
+        status,
         isEdit: false,
-      },
-    }));
+        title: newValue,
+      }).unwrap();
+    } catch (error) {
+      alert(`Error:${error}`);
+    }
   };
 
-  const toggleEditTaskStatus = () => {
-    setTasks((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        isEdit: !prev[id].isEdit,
-      },
-    }));
+  const toggleEditTaskStatus = async () => {
+    try {
+      await patchTask({ id, status, isEdit: !isEdit, title }).unwrap();
+    } catch (error) {
+      alert(`Error:${error}`);
+    }
   };
-  const toggleTaskStatus = () => {
-    setTasks((prev) => ({
-      ...prev,
-      [id]: {
-        ...prev[id],
-        status: !prev[id].status,
-      },
-    }));
+  const toggleTaskStatus = async () => {
+    try {
+      await patchTask({ id, status: !status, isEdit, title }).unwrap();
+    } catch (error) {
+      alert(`Error:${error}`);
+    }
   };
 
   return (
@@ -101,4 +92,12 @@ const Task: FC<ITask> = ({ title, status, id, isEdit, setTasks, ...props }) => {
   );
 };
 
-export default Task;
+const MemoizedTask = React.memo(Task, (prevProps, nextProps) => {
+  return (
+    prevProps.title === nextProps.title &&
+    prevProps.isEdit === nextProps.isEdit &&
+    prevProps.status === nextProps.status
+  );
+});
+
+export default MemoizedTask;
