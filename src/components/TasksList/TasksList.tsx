@@ -1,5 +1,5 @@
 import { useGetTasksQuery } from "../../store/api/tasksApi";
-import { MemoizedTask } from "../../ui";
+import Task from "../Task/Task";
 
 const TasksList = () => {
   const { data = [], isLoading } = useGetTasksQuery();
@@ -12,7 +12,7 @@ const TasksList = () => {
       ) : (
         <ul style={{ padding: "0" }}>
           {data.map((el) => (
-            <MemoizedTask
+            <Task
               key={el.id}
               title={el.title}
               id={el.id}

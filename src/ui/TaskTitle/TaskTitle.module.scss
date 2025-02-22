@@ -1,0 +1,20 @@
+.taskTitle {
+  font-size: 20px;
+  font-weight: 400;
+  margin: auto 0;
+  padding: 0;
+  cursor: pointer;
+
+  .taskTitleDone {
+    position: relative;
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 65%;
+      border-top: 3px solid #7fa29d;
+      transform: translateY(-50%);
+    }
+  }
+}
