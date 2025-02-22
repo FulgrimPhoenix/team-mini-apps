@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import { routes } from "./routes";
+import { Layout, ToDo } from "../pages";
 
 export const AppRoutes = () => {
   return (
     <Routes>
-      {routes.map((item, i) => (
-        <Route key={i} path={item.path} element={item.element}></Route>
-      ))}
+      <Route path="/" element={<Layout />}>
+        <Route index element={<ToDo />} />
+      </Route>
     </Routes>
   );
 };

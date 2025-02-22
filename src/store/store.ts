@@ -1,6 +1,6 @@
 import { configureStore } from "@reduxjs/toolkit";
 import rootReducer from "./rootReducer";
-import { tasksApi } from "./tasksApi";
+import { tasksApi } from "./api/tasksApi";
 
 export const store = configureStore({
   reducer: rootReducer,

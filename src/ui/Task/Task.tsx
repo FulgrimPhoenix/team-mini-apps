@@ -8,7 +8,7 @@ import { DeleteIcon, EditIcon, SaveIcon } from "../../assets";
 import {
   useDeleteTaskMutation,
   useUpdateTaskMutation,
-} from "../../store/tasksApi";
+} from "../../store/api/tasksApi";
 
 interface ITask
   extends DetailedHTMLProps<HTMLAttributes<HTMLLIElement>, HTMLLIElement> {
